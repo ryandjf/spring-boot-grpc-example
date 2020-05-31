@@ -1,0 +1,53 @@
+plugins {
+    id "java"
+    id "idea"
+    id "com.google.protobuf" version "0.8.12"
+    id "org.springframework.boot" version "2.2.2.RELEASE"
+    id "io.spring.dependency-management" version "1.0.8.RELEASE"
+}
+
+repositories {
+    maven {
+        url "https://maven.aliyun.com/repository/central"
+    }
+    mavenCentral()
+}
+
+
+group = 'net.thoughtworks'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+dependencies {
+    compileOnly 'com.google.protobuf:protobuf-javalite:3.8.0'
+
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    implementation("io.grpc:grpc-stub:1.29.0")
+    implementation("io.grpc:grpc-core:1.29.0")
+    implementation("io.grpc:grpc-protobuf:1.29.0")
+    implementation("io.grpc:grpc-netty:1.29.0")
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.12.2"
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.29.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
+wrapper {
+    gradleVersion = '6.3'
+}
